@@ -26,17 +26,23 @@ abstract class UdpSocket
             $this->echoErrorAndExit();
         }
 
-        echo "Server is listening on $serverIpAddr:$serverPort\n";
+        echo "Server is listening on $serverIpAddr:$serverPort\n\n";
     }
 
-    protected function receiveDataFrom(string $clientIpAddr, int $clientPort): int|false
+    protected function receiveDataFrom(): array
     {
-        return socket_recvfrom($this->socket, $data, 1024, 0, $clientIpAddr, $clientPort);
+        if (!socket_recvfrom($this->socket, $data, 1024, 0, $clientIpAddr, $clientPort)) {
+            $this->echoErrorAndExit();
+        }
+
+        return [$data, $clientIpAddr, $clientPort];
     }
 
-    protected function sendDataTo(string $clientIpAddr, int $clientPort): int|false
+    protected function sendDataTo(string $clientIpAddr, int $clientPort, string $data): void
     {
-        return socket_sendto($this->socket, "OK\n", 3, 0, $clientIpAddr, $clientPort);
+        if (!socket_sendto($this->socket, $data, 1024, 0, $clientIpAddr, $clientPort)) {
+            $this->echoErrorAndExit();
+        }
     }
 
     protected function echoErrorAndExit(): void

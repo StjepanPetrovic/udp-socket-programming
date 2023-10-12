@@ -9,23 +9,20 @@ final class Server extends UdpSocket
     public function __invoke()
     {
         while (true) {
-            $clientIpAddr = '0.0.0.0';
-            $clientPort = 2345;
+            [$clientMessage, $clientIpAddr, $clientPort] = $this->receiveDataFrom();
 
-            if (!$data = $this->receiveDataFrom($clientIpAddr, $clientPort)) {
-                $this->echoErrorAndExit();
-            }
+            echo "Message from $clientIpAddr:$clientPort: $clientMessage\n\n";
 
-            echo "Received $data from $clientIpAddr:$clientPort\n";
+            do {
+                $message = readline('Write message: ');
+            } while (!$message);
 
-            if (!$this->sendDataTo($clientIpAddr, $clientPort)) {
-                $this->echoErrorAndExit();
-            }
+            $this->sendDataTo($clientIpAddr, $clientPort, $message);
 
-            echo "Sent OK to $clientIpAddr:$clientPort\n";
+            echo "Message sent to $clientIpAddr:$clientPort\n\n";
         }
     }
 }
 
-$server = new Server('0.0.0.0', 1234);
+$server = new Server('127.0.0.1', 1111);
 $server();
