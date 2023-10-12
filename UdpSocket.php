@@ -15,6 +15,11 @@ abstract class UdpSocket
         $this->bind($serverIpAddr, $serverPort);
     }
 
+    public function __destruct()
+    {
+        socket_close($this->socket);
+    }
+
     private function bind(string $serverIpAddr, int $serverPort): void
     {
         if (!socket_bind($this->socket, $serverIpAddr, $serverPort)) {
@@ -41,3 +46,6 @@ abstract class UdpSocket
         exit(1);
     }
 }
+
+$client = new Client('0.0.0.0', 2345);
+$client();
