@@ -23,12 +23,6 @@ final class Server extends UdpSocket
             }
 
             echo "Sent OK to $clientIpAddr:$clientPort\n";
-
-            if (!$this->receiveDataFrom($clientIpAddr, $clientPort)) {
-                $this->echoErrorAndExit();
-            }
-
-            echo "Sent OK to $clientIpAddr:$clientPort\n";
         }
     }
 }
