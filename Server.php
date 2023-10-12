@@ -9,8 +9,8 @@ final class Server extends UdpSocket
     public function __invoke()
     {
         while (true) {
-            $clientIpAddr = '';
-            $clientPort = 0;
+            $clientIpAddr = '0.0.0.0';
+            $clientPort = 2345;
 
             if (!$data = $this->receiveDataFrom($clientIpAddr, $clientPort)) {
                 $this->echoErrorAndExit();

@@ -46,6 +46,3 @@ abstract class UdpSocket
         exit(1);
     }
 }
-
-$client = new Client('0.0.0.0', 2345);
-$client();
